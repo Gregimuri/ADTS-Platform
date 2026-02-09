@@ -3,31 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADTS Platform - Демо прототип</title>
-    <link rel="stylesheet" href="style.css">
+    <title>ADTS Platform - Продвинутый прототип</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Шапка с выбором роли -->
-        <header>
+    <!-- Onboarding Tour -->
+    <div class="onboarding-tour" id="onboarding-tour">
+        <div class="tour-content">
+            <div class="tour-step" id="tour-step-1">
+                <div class="tour-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h3>Добро пожаловать в ADTS Platform!</h3>
+                <p>Это интерактивный прототип платформы для управления проектами по установке рекламного оборудования.</p>
+                <p>Вы можете переключаться между ролями пользователей и тестировать основные функции системы.</p>
+            </div>
+            <div class="tour-step hidden" id="tour-step-2">
+                <div class="tour-icon">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <h3>Четыре роли пользователей</h3>
+                <p>1. <strong>Заказчик</strong> - создает проекты и отслеживает выполнение</p>
+                <p>2. <strong>Менеджер платформы</strong> - обрабатывает заявки и запускает проекты</p>
+                <p>3. <strong>Менеджер проектов</strong> - управляет задачами по регионам</p>
+                <p>4. <strong>Подрядчик</strong> - берет задачи и сдает отчеты</p>
+            </div>
+            <div class="tour-navigation">
+                <button class="btn btn-outline" id="tour-prev">
+                    <i class="fas fa-arrow-left"></i> Назад
+                </button>
+                <div class="tour-progress">
+                    <div class="tour-progress-dot active" data-step="1"></div>
+                    <div class="tour-progress-dot" data-step="2"></div>
+                </div>
+                <button class="btn btn-primary" id="tour-next">
+                    Далее <i class="fas fa-arrow-right"></i>
+                </button>
+                <button class="btn btn-primary hidden" id="tour-start">
+                    Начать демонстрацию <i class="fas fa-play"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="glass-header">
+        <div class="header-content">
             <div class="logo">
-                <h1><i class="fas fa-ad"></i> ADTS Platform</h1>
-                <p class="subtitle">Adtech Solutions - Управление проектами установки рекламного оборудования</p>
+                <div class="logo-icon">
+                    <i class="fas fa-ad"></i>
+                </div>
+                <div class="logo-text">
+                    <span>ADTS Platform</span>
+                    <div class="logo-subtitle">Adtech Solutions Project Management</div>
+                </div>
             </div>
             
-            <div class="role-selector">
-                <div class="current-role">
-                    <span>Текущая роль:</span>
-                    <strong id="currentRoleName">Заказчик</strong>
-                </div>
-                <div class="role-buttons">
+            <div class="user-info">
+                <div class="role-selector">
                     <button class="role-btn active" data-role="customer">
                         <i class="fas fa-building"></i> Заказчик
                     </button>
                     <button class="role-btn" data-role="platform-manager">
-                        <i class="fas fa-headset"></i> Менеджер платформы
+                        <i class="fas fa-cogs"></i> Менеджер платформы
                     </button>
                     <button class="role-btn" data-role="project-manager">
                         <i class="fas fa-tasks"></i> Менеджер проектов
@@ -36,554 +76,1180 @@
                         <i class="fas fa-tools"></i> Подрядчик
                     </button>
                 </div>
+                
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
             </div>
-        </header>
+        </div>
+    </header>
 
-        <!-- Основной контент -->
-        <main>
-            <!-- Панель заказчика -->
-            <section id="customer-panel" class="role-panel active">
-                <div class="panel-header">
-                    <h2><i class="fas fa-building"></i> Панель заказчика: Компания "Магнит"</h2>
-                    <button id="createProjectBtn" class="btn-primary">
-                        <i class="fas fa-plus"></i> Создать новый проект
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Заказчик -->
+        <section id="customer-section" class="role-section active">
+            <div class="dashboard-header">
+                <div class="dashboard-title">
+                    <div class="dashboard-title-icon gradient-primary">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div>
+                        <h1>Панель заказчика</h1>
+                        <p class="dashboard-subtitle">Компания "Магнит"</p>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="create-project-btn">
+                        <i class="fas fa-plus-circle"></i> Новый проект
+                    </button>
+                    <button class="btn btn-outline" id="demo-tour-btn">
+                        <i class="fas fa-question-circle"></i> Помощь
                     </button>
                 </div>
-
-                <!-- Статистика проектов -->
-                <div class="dashboard-stats">
-                    <div class="stat-card">
-                        <h3>Всего проектов</h3>
-                        <div class="stat-value">4</div>
+            </div>
+            
+            <div class="stats-overview">
+                <div class="stat-card">
+                    <div class="stat-label">
+                        <i class="fas fa-chart-line"></i> Активных проектов
                     </div>
-                    <div class="stat-card">
-                        <h3>Всего точек</h3>
-                        <div class="stat-value">142</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Выполнено</h3>
-                        <div class="stat-value">89</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>В процессе</h3>
-                        <div class="stat-value">42</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Проблемы</h3>
-                        <div class="stat-value">11</div>
+                    <div class="stat-value">5</div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> +2 за месяц
                     </div>
                 </div>
-
-                <!-- Список проектов -->
-                <div class="projects-list">
-                    <h3>Мои проекты</h3>
+                
+                <div class="stat-card">
+                    <div class="stat-label">
+                        <i class="fas fa-map-marker-alt"></i> Всего точек
+                    </div>
+                    <div class="stat-value">142</div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> +45 за месяц
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">
+                        <i class="fas fa-check-circle"></i> Выполнено
+                    </div>
+                    <div class="stat-value">89</div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> 62.7%
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">
+                        <i class="fas fa-exclamation-triangle"></i> Проблемные
+                    </div>
+                    <div class="stat-value">12</div>
+                    <div class="stat-trend trend-down">
+                        <i class="fas fa-arrow-down"></i> -3 за неделю
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tabs">
+                <button class="tab active" data-tab="projects-overview">
+                    <i class="fas fa-project-diagram"></i> Проекты
+                </button>
+                <button class="tab" data-tab="documents">
+                    <i class="fas fa-folder"></i> Документы
+                    <span class="tab-badge">4</span>
+                </button>
+                <button class="tab" data-tab="payments">
+                    <i class="fas fa-credit-card"></i> Оплаты
+                </button>
+                <button class="tab" data-tab="settings-customer">
+                    <i class="fas fa-cog"></i> Настройки
+                </button>
+            </div>
+            
+            <div class="tab-content active" id="projects-overview-tab">
+                <div class="content-grid">
+                    <div class="main-content-card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-list-check"></i> Мои проекты
+                            </h2>
+                        </div>
+                        
+                        <div class="card-content">
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Проект</th>
+                                            <th>Точки</th>
+                                            <th>Прогресс</th>
+                                            <th>Срок</th>
+                                            <th>Статус</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="project-info-cell">
+                                                <div class="project-name">"Магнит-Аптека" - Установка дисплеев</div>
+                                                <div class="project-description">Установка дисплеев покупателя в 49 аптеках</div>
+                                            </td>
+                                            <td><span class="badge-count">49</span></td>
+                                            <td>
+                                                <div class="progress-container">
+                                                    <div class="progress-header">
+                                                        <span>65%</span>
+                                                        <span>32/49</span>
+                                                    </div>
+                                                    <div class="progress-bar">
+                                                        <div class="progress-fill" style="width: 65%"></div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><span class="deadline">15.11.2023</span></td>
+                                            <td><span class="status-badge status-in-progress"><i class="fas fa-spinner fa-spin"></i> В работе</span></td>
+                                            <td>
+                                                <button class="btn btn-outline btn-sm view-project-details">
+                                                    <i class="fas fa-eye"></i> Детали
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="project-info-cell">
+                                                <div class="project-name">"Лента" - Обновление экранов</div>
+                                                <div class="project-description">Замена старых экранов на новые в 50 супермаркетах</div>
+                                            </td>
+                                            <td><span class="badge-count">50</span></td>
+                                            <td>
+                                                <div class="progress-container">
+                                                    <div class="progress-header">
+                                                        <span>42%</span>
+                                                        <span>21/50</span>
+                                                    </div>
+                                                    <div class="progress-bar">
+                                                        <div class="progress-fill" style="width: 42%"></div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><span class="deadline">25.10.2023</span></td>
+                                            <td><span class="status-badge status-in-progress"><i class="fas fa-spinner fa-spin"></i> В работе</span></td>
+                                            <td>
+                                                <button class="btn btn-outline btn-sm view-project-details">
+                                                    <i class="fas fa-eye"></i> Детали
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                     
-                    <div class="project-card">
-                        <div class="project-header">
-                            <h4>Установка дисплеев в Магнит-Аптеках</h4>
-                            <span class="status-badge status-in-progress">В работе</span>
-                        </div>
-                        <div class="project-info">
-                            <p><i class="far fa-file-alt"></i> Установка дисплеев покупателя в 50 аптеках по Москве</p>
-                            <div class="project-meta">
-                                <span><i class="far fa-calendar"></i> Срок: 15.06.2023 - 30.08.2023</span>
-                                <span><i class="fas fa-map-marker-alt"></i> Регионы: Москва</span>
-                                <span><i class="fas fa-bullseye"></i> Точки: 50</span>
+                    <div class="sidebar-cards">
+                        <div class="sidebar-card">
+                            <h3 class="card-title">
+                                <i class="fas fa-comments"></i> Последние сообщения
+                            </h3>
+                            
+                            <div class="chat-contact active">
+                                <div class="chat-contact-avatar gradient-primary">
+                                    <i class="fas fa-user-tie"></i>
+                                </div>
+                                <div class="chat-contact-info">
+                                    <div class="chat-contact-name">Менеджер платформы</div>
+                                    <div class="chat-contact-last">Уточните сроки по 5 точкам в Омске</div>
+                                </div>
+                                <div class="chat-contact-time">10:25</div>
                             </div>
-                        </div>
-                        <div class="project-progress">
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 65%"></div>
-                            </div>
-                            <div class="progress-stats">
-                                <span>Выполнено: 32/50</span>
-                                <span>Проверка: 5</span>
-                                <span>Проблемы: 2</span>
-                            </div>
-                        </div>
-                        <div class="project-actions">
-                            <button class="btn-secondary view-details">
-                                <i class="fas fa-eye"></i> Подробнее
+                            
+                            <button class="btn btn-outline w-full mt-4" id="open-chat-btn">
+                                <i class="fas fa-comment-dots"></i> Открыть чат
                             </button>
-                            <button class="btn-secondary open-chat">
-                                <i class="fas fa-comment"></i> Чат с менеджером
+                        </div>
+                        
+                        <div class="sidebar-card">
+                            <h3 class="card-title">
+                                <i class="fas fa-chart-pie"></i> Статистика выполнения
+                            </h3>
+                            
+                            <div class="chart-container">
+                                <canvas id="customer-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="main-content-card mt-5">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-map-marked-alt"></i> Карта выполнения проекта
+                        </h2>
+                    </div>
+                    
+                    <div class="card-content">
+                        <div class="map-preview">
+                            <div class="map-point" style="top: 30%; left: 25%;"></div>
+                            <div class="map-point" style="top: 40%; left: 40%;"></div>
+                            <div class="map-point" style="top: 60%; left: 35%;"></div>
+                            <div class="map-point" style="top: 50%; left: 60%;"></div>
+                            <div class="map-point" style="top: 70%; left: 75%;"></div>
+                            
+                            <div class="map-placeholder">
+                                <i class="fas fa-map"></i>
+                                <h3>Карта точек выполнения</h3>
+                                <p>В рабочей версии будет интегрирована интерактивная карта</p>
+                            </div>
+                        </div>
+                        
+                        <div class="map-legend">
+                            <div class="legend-item">
+                                <div class="legend-color completed"></div>
+                                <span>Выполнено (89)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color in-progress"></div>
+                                <span>В работе (42)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color problematic"></div>
+                                <span>Проблемные (12)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color pending"></div>
+                                <span>Ожидают (23)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="documents-tab">
+                <div class="form-container">
+                    <h2 class="card-title">
+                        <i class="fas fa-folder-open"></i> Документы проекта
+                    </h2>
+                    
+                    <div class="documents-grid">
+                        <div class="document-card">
+                            <div class="document-icon">
+                                <i class="fas fa-file-contract"></i>
+                            </div>
+                            <h4>Договор №245-2023</h4>
+                            <p>Подписан 15.09.2023</p>
+                            <button class="btn btn-outline btn-sm">
+                                <i class="fas fa-download"></i> Скачать
+                            </button>
+                        </div>
+                        
+                        <div class="document-card">
+                            <div class="document-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <h4>Техническое задание</h4>
+                            <p>Версия 2.1 от 20.09.2023</p>
+                            <button class="btn btn-outline btn-sm">
+                                <i class="fas fa-download"></i> Скачать
+                            </button>
+                        </div>
+                        
+                        <div class="document-card">
+                            <div class="document-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <h4>Отчет по выполнению</h4>
+                            <p>Еженедельный отчет</p>
+                            <button class="btn btn-outline btn-sm">
+                                <i class="fas fa-download"></i> Скачать
+                            </button>
+                        </div>
+                        
+                        <div class="document-card">
+                            <div class="document-icon">
+                                <i class="fas fa-receipt"></i>
+                            </div>
+                            <h4>Акты выполненных работ</h4>
+                            <p>32 акта за сентябрь</p>
+                            <button class="btn btn-outline btn-sm">
+                                <i class="fas fa-download"></i> Скачать
                             </button>
                         </div>
                     </div>
-
-                    <div class="project-card">
-                        <div class="project-header">
-                            <h4>Обновление экранов в гипермаркетах</h4>
-                            <span class="status-badge status-completed">Выполнен</span>
-                        </div>
-                        <div class="project-info">
-                            <p><i class="far fa-file-alt"></i> Замена устаревших экранов на новые LED-панели</p>
-                            <div class="project-meta">
-                                <span><i class="far fa-calendar"></i> Срок: 01.04.2023 - 15.05.2023</span>
-                                <span><i class="fas fa-map-marker-alt"></i> Регионы: Москва, СПб</span>
-                                <span><i class="fas fa-bullseye"></i> Точки: 30</span>
+                    
+                    <div class="mt-5">
+                        <h3 class="card-title">
+                            <i class="fas fa-upload"></i> Загрузить новый документ
+                        </h3>
+                        
+                        <div class="file-upload" id="customer-file-upload">
+                            <div class="file-upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
                             </div>
+                            <p>Перетащите документы сюда или нажмите для выбора</p>
+                            <p>PDF, DOC, XLS, JPG до 50 МБ</p>
                         </div>
-                        <div class="project-progress">
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 100%"></div>
-                            </div>
-                            <div class="progress-stats">
-                                <span>Выполнено: 30/30</span>
-                            </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Менеджер платформы -->
+        <section id="platform-manager-section" class="role-section">
+            <div class="dashboard-header">
+                <div class="dashboard-title">
+                    <div class="dashboard-title-icon gradient-warning">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div>
+                        <h1>Панель менеджера платформы</h1>
+                        <p class="dashboard-subtitle">Управление заявками и проектами</p>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="export-reports">
+                        <i class="fas fa-file-export"></i> Экспорт отчетов
+                    </button>
+                    <button class="btn btn-outline" id="platform-settings">
+                        <i class="fas fa-cog"></i> Настройки
+                    </button>
+                </div>
+            </div>
+            
+            <div class="stats-overview">
+                <div class="stat-card">
+                    <div class="stat-label">
+                        <i class="fas fa-inbox"></i> Новые заявки
+                    </div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> +1 за сутки
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">
+                        <i class="fas fa-play-circle"></i> Активных проектов
+                    </div>
+                    <div class="stat-value">14</div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> +3 за неделю
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">
+                        <i class="fas fa-users"></i> Активных подрядчиков
+                    </div>
+                    <div class="stat-value">87</div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> +12 за месяц
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">
+                        <i class="fas fa-clock"></i> Среднее время обработки
+                    </div>
+                    <div class="stat-value">2.4ч</div>
+                    <div class="stat-trend trend-down">
+                        <i class="fas fa-arrow-down"></i> -0.8ч за месяц
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tabs">
+                <button class="tab active" data-tab="new-requests">
+                    <i class="fas fa-bell"></i> Новые заявки
+                    <span class="tab-badge">3</span>
+                </button>
+                <button class="tab" data-tab="active-projects-manager">
+                    <i class="fas fa-play"></i> Активные проекты
+                    <span class="tab-badge">14</span>
+                </button>
+                <button class="tab" data-tab="contractors-manager">
+                    <i class="fas fa-hard-hat"></i> Подрядчики
+                </button>
+            </div>
+            
+            <div class="tab-content active" id="new-requests-tab">
+                <div class="task-grid">
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-client">"Перекресток"</div>
+                            <span class="status-badge status-new"><i class="fas fa-clock"></i> Новая</span>
                         </div>
-                        <div class="project-actions">
-                            <button class="btn-secondary view-details">
-                                <i class="fas fa-eye"></i> Подробнее
+                        <div class="task-body">
+                            <h4>Установка информационных экранов</h4>
+                            <div class="task-meta">
+                                <div class="task-meta-item">
+                                    <i class="fas fa-map-marker-alt"></i> 78 точек
+                                </div>
+                                <div class="task-meta-item">
+                                    <i class="fas fa-calendar"></i> До 30.11.2023
+                                </div>
+                                <div class="task-meta-item">
+                                    <i class="fas fa-file-pdf"></i> ТЗ прикреплено
+                                </div>
+                            </div>
+                            <p class="task-description">
+                                Установка информационных экранов в 78 магазинах сети "Перекресток" в Москве, СПб и регионах.
+                            </p>
+                        </div>
+                        <div class="task-footer">
+                            <button class="btn btn-outline btn-sm contact-client-btn">
+                                <i class="fas fa-comment"></i> Связаться
                             </button>
-                            <button class="btn-secondary">
-                                <i class="fas fa-download"></i> Отчет
+                            <button class="btn btn-primary btn-sm launch-project-btn">
+                                <i class="fas fa-play"></i> Запустить проект
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="task-card featured">
+                        <div class="task-header">
+                            <div class="task-client">"Ашан"</div>
+                            <span class="status-badge status-new"><i class="fas fa-bolt"></i> Срочно</span>
+                        </div>
+                        <div class="task-body">
+                            <h4>Замена дисплеев покупателя</h4>
+                            <div class="task-meta">
+                                <div class="task-meta-item">
+                                    <i class="fas fa-map-marker-alt"></i> 45 точек
+                                </div>
+                                <div class="task-meta-item">
+                                    <i class="fas fa-calendar"></i> До 20.11.2023
+                                </div>
+                                <div class="task-meta-item">
+                                    <i class="fas fa-exclamation-circle"></i> Требует уточнений
+                                </div>
+                            </div>
+                            <p class="task-description">
+                                Замена устаревших дисплеев покупателя на новые модели в гипермаркетах "Ашан".
+                            </p>
+                        </div>
+                        <div class="task-footer">
+                            <button class="btn btn-outline btn-sm contact-client-btn">
+                                <i class="fas fa-comment"></i> Связаться
+                            </button>
+                            <button class="btn btn-outline btn-sm">
+                                <i class="fas fa-question-circle"></i> Запросить дополнения
                             </button>
                         </div>
                     </div>
                 </div>
-
-                <!-- Модальное окно создания проекта -->
-                <div id="createProjectModal" class="modal">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3>Создание нового проекта</h3>
-                            <button class="close-modal">&times;</button>
+            </div>
+            
+            <div class="tab-content" id="active-projects-manager">
+                <div class="kanban-board">
+                    <div class="kanban-column">
+                        <div class="kanban-column-header">
+                            <span>Новые</span>
+                            <span class="kanban-column-count">3</span>
                         </div>
-                        <div class="modal-body">
-                            <form id="projectForm">
-                                <div class="form-group">
-                                    <label for="projectName">Название проекта *</label>
-                                    <input type="text" id="projectName" placeholder="Например: Установка экранов в Лентах" required>
+                        <div class="kanban-tasks">
+                            <div class="kanban-task" draggable="true">
+                                <h4>М.Видео - Ремонт экранов</h4>
+                                <p>12 точек, срочно</p>
+                                <div class="kanban-task-footer">
+                                    <span class="status-badge status-new">Новый</span>
+                                    <button class="btn btn-icon btn-sm">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
                                 </div>
-                                
-                                <div class="form-group">
-                                    <label for="projectDescription">Описание проекта *</label>
-                                    <textarea id="projectDescription" rows="3" placeholder="Подробное описание работ..." required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="kanban-column">
+                        <div class="kanban-column-header">
+                            <span>Назначение ПМ</span>
+                            <span class="kanban-column-count">2</span>
+                        </div>
+                        <div class="kanban-tasks">
+                            <div class="kanban-task" draggable="true">
+                                <h4>Перекресток - Экраны</h4>
+                                <p>78 точек, 3 региона</p>
+                                <div class="kanban-task-footer">
+                                    <span class="status-badge status-in-progress">Назначение</span>
+                                    <button class="btn btn-icon btn-sm">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
                                 </div>
-                                
-                                <div class="form-group">
-                                    <label for="projectPoints">Количество точек *</label>
-                                    <input type="number" id="projectPoints" min="1" value="10" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="kanban-column">
+                        <div class="kanban-column-header">
+                            <span>В работе</span>
+                            <span class="kanban-column-count">8</span>
+                        </div>
+                        <div class="kanban-tasks">
+                            <div class="kanban-task" draggable="true">
+                                <h4>Магнит-Аптека</h4>
+                                <p>49 точек, 65% готово</p>
+                                <div class="kanban-task-footer">
+                                    <span class="status-badge status-in-progress">В работе</span>
+                                    <button class="btn btn-icon btn-sm">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
                                 </div>
-                                
-                                <div class="form-group">
-                                    <label for="projectRegions">Регионы выполнения</label>
-                                    <select id="projectRegions" multiple>
-                                        <option value="moscow">Москва</option>
-                                        <option value="spb">Санкт-Петербург</option>
-                                        <option value="ekb">Екатеринбург</option>
-                                        <option value="novosibirsk">Новосибирск</option>
-                                        <option value="kazan">Казань</option>
-                                    </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="kanban-column">
+                        <div class="kanban-column-header">
+                            <span>Завершенные</span>
+                            <span class="kanban-column-count">1</span>
+                        </div>
+                        <div class="kanban-tasks">
+                            <div class="kanban-task" draggable="true">
+                                <h4>Пятерочка - Стойки</h4>
+                                <p>30 точек, выполнено</p>
+                                <div class="kanban-task-footer">
+                                    <span class="status-badge status-completed">Завершен</span>
+                                    <button class="btn btn-icon btn-sm">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
                                 </div>
-                                
-                                <div class="form-group">
-                                    <label for="projectFiles">Техническое задание (при наличии)</label>
-                                    <div class="file-upload">
-                                        <input type="file" id="projectFiles" multiple>
-                                        <label for="projectFiles" class="file-upload-label">
-                                            <i class="fas fa-cloud-upload-alt"></i> Загрузить файлы
-                                        </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Менеджер проектов -->
+        <section id="project-manager-section" class="role-section">
+            <div class="dashboard-header">
+                <div class="dashboard-title">
+                    <div class="dashboard-title-icon gradient-info">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div>
+                        <h1>Панель менеджера проектов</h1>
+                        <p class="dashboard-subtitle">Регион: Москва и Московская область</p>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="create-task-pm">
+                        <i class="fas fa-plus-circle"></i> Новая задача
+                    </button>
+                    <button class="btn btn-outline" id="pm-calendar-btn">
+                        <i class="fas fa-calendar"></i> Календарь
+                    </button>
+                </div>
+            </div>
+            
+            <div class="content-grid">
+                <div class="main-content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-list-check"></i> Мои задачи
+                        </h2>
+                        <div class="tabs tabs-compact">
+                            <button class="tab active" data-tab="assigned-tasks">
+                                Назначенные
+                                <span class="tab-badge">3</span>
+                            </button>
+                            <button class="tab" data-tab="reports-review">
+                                На проверке
+                                <span class="tab-badge">7</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="card-content">
+                        <div class="tab-content active" id="assigned-tasks-tab">
+                            <div class="task-grid">
+                                <div class="task-card">
+                                    <div class="task-header">
+                                        <div class="task-client">"Магнит-Аптека"</div>
+                                        <span class="status-badge status-in-progress"><i class="fas fa-spinner fa-spin"></i> В работе</span>
+                                    </div>
+                                    <div class="task-body">
+                                        <h4>Установка дисплеев - 15 точек</h4>
+                                        <div class="task-meta">
+                                            <div class="task-meta-item">
+                                                <i class="fas fa-calendar"></i> До 15.10.2023
+                                            </div>
+                                            <div class="task-meta-item">
+                                                <i class="fas fa-user-hard-hat"></i> ООО "МонтажСервис"
+                                            </div>
+                                        </div>
+                                        <div class="task-price">1 200 ₽/точка + 2 500 ₽ выезд</div>
+                                        <p class="task-description">
+                                            Установка дисплеев покупателя в 15 аптеках "Магнит" в Москве.
+                                        </p>
+                                        <div class="progress-container">
+                                            <div class="progress-header">
+                                                <span>60%</span>
+                                                <span>9/15</span>
+                                            </div>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 60%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="task-footer">
+                                        <button class="btn btn-outline btn-sm chat-with-contractor">
+                                            <i class="fas fa-comment"></i> Чат
+                                        </button>
+                                        <button class="btn btn-outline btn-sm">
+                                            <i class="fas fa-clock"></i> Таймер
+                                        </button>
                                     </div>
                                 </div>
                                 
-                                <div class="form-actions">
-                                    <button type="button" class="btn-secondary close-modal">Отмена</button>
-                                    <button type="submit" class="btn-primary">Создать проект</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Панель менеджера платформы -->
-            <section id="platform-manager-panel" class="role-panel">
-                <div class="panel-header">
-                    <h2><i class="fas fa-headset"></i> Панель менеджера платформы</h2>
-                    <div class="notification-badge">
-                        <i class="fas fa-bell"></i>
-                        <span class="badge">3</span>
-                    </div>
-                </div>
-
-                <!-- Входящие заявки -->
-                <div class="section">
-                    <h3>Входящие заявки на проекты</h3>
-                    
-                    <div class="request-list">
-                        <div class="request-card">
-                            <div class="request-header">
-                                <h4>Установка видеоэкранов в Пятерочках</h4>
-                                <span class="request-date">Сегодня, 10:30</span>
-                            </div>
-                            <div class="request-info">
-                                <p><strong>Заказчик:</strong> Компания "Пятерочка"</p>
-                                <p><strong>Точек:</strong> 120 по всей России</p>
-                                <p><strong>Описание:</strong> Установка информационных экранов в торговых залах</p>
-                                <div class="request-files">
-                                    <span><i class="fas fa-paperclip"></i> ТЗ_Пятерочка_экраны.pdf</span>
+                                <div class="task-card">
+                                    <div class="task-header">
+                                        <div class="task-client">"Лента"</div>
+                                        <span class="status-badge status-new"><i class="fas fa-clock"></i> Новая</span>
+                                    </div>
+                                    <div class="task-body">
+                                        <h4>Обновление экранов - 25 точек</h4>
+                                        <div class="task-meta">
+                                            <div class="task-meta-item">
+                                                <i class="fas fa-calendar"></i> До 25.10.2023
+                                            </div>
+                                            <div class="task-meta-item">
+                                                <i class="fas fa-wrench"></i> Требуется подрядчик
+                                            </div>
+                                        </div>
+                                        <div class="task-price">3 000 ₽/экран</div>
+                                        <p class="task-description">
+                                            Установка 6-10 экранов на каждой точке в 25 супермаркетах "Лента".
+                                        </p>
+                                    </div>
+                                    <div class="task-footer">
+                                        <button class="btn btn-secondary btn-sm publish-task-btn">
+                                            <i class="fas fa-bullhorn"></i> Опубликовать
+                                        </button>
+                                        <button class="btn btn-outline btn-sm">
+                                            <i class="fas fa-edit"></i> Редактировать
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="request-actions">
-                                <button class="btn-primary open-chat">
-                                    <i class="fas fa-comments"></i> Обсудить в чате
-                                </button>
-                                <button class="btn-secondary">
-                                    <i class="fas fa-eye"></i> Подробнее
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="request-card">
-                            <div class="request-header">
-                                <h4>Монтаж стеллажей в Ашанах</h4>
-                                <span class="request-date">Вчера, 16:45</span>
-                            </div>
-                            <div class="request-info">
-                                <p><strong>Заказчик:</strong> Ашан Ритейл</p>
-                                <p><strong>Точек:</strong> 45 (Москва и область)</p>
-                                <p><strong>Описание:</strong> Установка рекламных стеллажей возле касс</p>
-                                <div class="request-files">
-                                    <span><i class="fas fa-paperclip"></i> Чертежи_стеллажи.pdf</span>
-                                </div>
-                            </div>
-                            <div class="request-actions">
-                                <button class="btn-primary open-chat">
-                                    <i class="fas fa-comments"></i> Обсудить в чате
-                                </button>
-                                <button class="btn-secondary">
-                                    <i class="fas fa-play-circle"></i> Запустить в работу
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Активные проекты -->
-                <div class="section">
-                    <h3>Активные проекты</h3>
-                    
-                    <div class="active-projects">
-                        <div class="project-mini-card">
-                            <h4>Магнит-Аптеки</h4>
-                            <p>32/50 точек</p>
-                            <div class="mini-progress">
-                                <div class="progress-fill" style="width: 65%"></div>
-                            </div>
-                            <button class="btn-small">
-                                <i class="fas fa-external-link-alt"></i> Перейти
-                            </button>
                         </div>
                         
-                        <div class="project-mini-card">
-                            <h4>Лента - экраны</h4>
-                            <p>18/25 точек</p>
-                            <div class="mini-progress">
-                                <div class="progress-fill" style="width: 72%"></div>
-                            </div>
-                            <button class="btn-small">
-                                <i class="fas fa-external-link-alt"></i> Перейти
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Чат с заказчиком -->
-                <div class="section">
-                    <h3>Чат с заказчиком: Пятерочка</h3>
-                    
-                    <div class="chat-demo">
-                        <div class="chat-message customer">
-                            <div class="message-header">
-                                <strong>Менеджер Пятерочки</strong>
-                                <span>10:15</span>
-                            </div>
-                            <p>Добрый день! По нашему ТЗ есть вопрос по размерам экранов. Нужны точные габариты.</p>
-                        </div>
-                        
-                        <div class="chat-message manager">
-                            <div class="message-header">
-                                <strong>Вы</strong>
-                                <span>10:18</span>
-                            </div>
-                            <p>Здравствуйте! Какие именно размеры вас интересуют? По ТЗ указано 55 дюймов.</p>
-                        </div>
-                        
-                        <div class="chat-message customer">
-                            <div class="message-header">
-                                <strong>Менеджер Пятерочки</strong>
-                                <span>10:20</span>
-                            </div>
-                            <p>Нужна толщина экрана, так как у нас ограниченное пространство на стене.</p>
-                        </div>
-                        
-                        <div class="chat-input">
-                            <input type="text" placeholder="Введите сообщение...">
-                            <button class="btn-primary">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Панель менеджера проектов -->
-            <section id="project-manager-panel" class="role-panel">
-                <div class="panel-header">
-                    <h2><i class="fas fa-tasks"></i> Панель менеджера проектов: Москва</h2>
-                    <div class="notification-badge">
-                        <i class="fas fa-bell"></i>
-                        <span class="badge">5</span>
-                    </div>
-                </div>
-
-                <!-- Мои задачи -->
-                <div class="section">
-                    <h3>Мои задачи по проектам</h3>
-                    
-                    <div class="tasks-grid">
-                        <div class="task-card">
-                            <div class="task-header">
-                                <h4>Установка дисплея</h4>
-                                <span class="priority-high">Срочно</span>
-                            </div>
-                            <div class="task-info">
-                                <p><strong>Проект:</strong> Магнит-Аптеки</p>
-                                <p><strong>Адрес:</strong> Москва, ул. Тверская, 15</p>
-                                <p><strong>Оплата:</strong> 1,200 ₽ + выезд 2,500 ₽</p>
-                                <p><strong>Срок:</strong> До 25.06.2023</p>
-                            </div>
-                            <div class="task-status">
-                                <span class="status-badge status-in-progress">В работе</span>
-                                <span><i class="fas fa-user"></i> Подрядчик: ИП Сидоров</span>
-                            </div>
-                            <div class="task-actions">
-                                <button class="btn-secondary open-chat">
-                                    <i class="fas fa-comment"></i> Чат
-                                </button>
-                                <button class="btn-primary check-report">
-                                    <i class="fas fa-check-circle"></i> Проверить отчет
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="task-card">
-                            <div class="task-header">
-                                <h4>Монтаж экрана</h4>
-                                <span class="priority-medium">Средний</span>
-                            </div>
-                            <div class="task-info">
-                                <p><strong>Проект:</strong> Лента - экраны</p>
-                                <p><strong>Адрес:</strong> Москва, ТРЦ Авиапарк</p>
-                                <p><strong>Оплата:</strong> 3,000 ₽ за экран (8 шт.)</p>
-                                <p><strong>Срок:</strong> До 30.06.2023</p>
-                            </div>
-                            <div class="task-status">
-                                <span class="status-badge status-pending">Ожидает подрядчика</span>
-                                <span><i class="fas fa-clock"></i> Опубликована 2 часа назад</span>
-                            </div>
-                            <div class="task-actions">
-                                <button class="btn-primary">
-                                    <i class="fas fa-edit"></i> Редактировать
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Фотоотчет на проверке -->
-                <div class="section">
-                    <h3>Фотоотчеты на проверке</h3>
-                    
-                    <div class="photo-report">
-                        <div class="report-header">
-                            <h4>Отчет от ИП Сидоров</h4>
-                            <span class="report-date">Сегодня, 09:45</span>
-                        </div>
-                        
-                        <div class="report-content">
-                            <div class="photo-gallery">
-                                <div class="photo-item">
-                                    <img src="https://via.placeholder.com/200x150/4CAF50/FFFFFF?text=Фото+1" alt="Фото работы">
-                                    <span>Общий вид</span>
+                        <div class="tab-content" id="reports-review-tab">
+                            <div class="sidebar-card">
+                                <h3 class="card-title">
+                                    <i class="fas fa-clipboard-check"></i> Отчеты на проверке
+                                </h3>
+                                
+                                <div class="report-item">
+                                    <div class="report-header">
+                                        <div>
+                                            <h4>Точка #32: Магнит-Аптека, ул. Ленина, 15</h4>
+                                            <p><i class="fas fa-user-hard-hat"></i> Подрядчик: ИП Сидоров А.В.</p>
+                                            <p><i class="fas fa-calendar"></i> Выполнено: 08.10.2023</p>
+                                        </div>
+                                        <span class="status-badge status-in-progress"><i class="fas fa-clock"></i> На проверке</span>
+                                    </div>
+                                    
+                                    <div class="photo-gallery">
+                                        <div class="photo-item">
+                                            <div class="photo-placeholder">
+                                                <i class="fas fa-image"></i>
+                                            </div>
+                                            <span>Общий вид</span>
+                                        </div>
+                                        <div class="photo-item">
+                                            <div class="photo-placeholder">
+                                                <i class="fas fa-image"></i>
+                                            </div>
+                                            <span>Крепление</span>
+                                        </div>
+                                        <div class="photo-item">
+                                            <div class="photo-placeholder">
+                                                <i class="fas fa-image"></i>
+                                            </div>
+                                            <span>Подключение</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="report-comment">
+                                        <i class="fas fa-comment"></i>
+                                        <div>
+                                            <strong>Комментарий подрядчика:</strong>
+                                            <p>Установлен дисплей покупателя, подключен к сети, проведено тестирование.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="report-actions">
+                                        <button class="btn btn-secondary btn-sm accept-report-btn">
+                                            <i class="fas fa-check"></i> Принять отчет
+                                        </button>
+                                        <button class="btn btn-outline btn-sm request-revision-btn">
+                                            <i class="fas fa-redo"></i> На доработку
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="photo-item">
-                                    <img src="https://via.placeholder.com/200x150/2196F3/FFFFFF?text=Фото+2" alt="Фото работы">
-                                    <span>Крепление</span>
-                                </div>
-                                <div class="photo-item">
-                                    <img src="https://via.placeholder.com/200x150/FF9800/FFFFFF?text=Фото+3" alt="Фото работы">
-                                    <span>Подключение</span>
-                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-cards">
+                    <div class="sidebar-card">
+                        <h3 class="card-title">
+                            <i class="fas fa-calendar-alt"></i> Календарь задач
+                        </h3>
+                        
+                        <div class="calendar-container">
+                            <div class="calendar-header">
+                                <button class="btn btn-icon btn-sm">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <h4>Октябрь 2023</h4>
+                                <button class="btn btn-icon btn-sm">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
                             </div>
                             
-                            <div class="report-actions">
-                                <button class="btn-primary accept-report">
-                                    <i class="fas fa-check"></i> Принять работу
-                                </button>
-                                <button class="btn-secondary reject-report">
-                                    <i class="fas fa-times"></i> Отклонить с замечаниями
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Панель подрядчика -->
-            <section id="contractor-panel" class="role-panel">
-                <div class="panel-header">
-                    <h2><i class="fas fa-tools"></i> Панель подрядчика: ИП Сидоров А.В.</h2>
-                    <div class="contractor-stats">
-                        <span>Рейтинг: 4.8 ★</span>
-                        <span>Выполнено: 42 задачи</span>
-                    </div>
-                </div>
-
-                <!-- Доступные задачи -->
-                <div class="section">
-                    <h3>Доступные задачи в Москве <span class="new-badge">3 новые</span></h3>
-                    
-                    <div class="available-tasks">
-                        <div class="task-card">
-                            <div class="task-header">
-                                <h4>Установка дисплея в аптеке</h4>
-                                <span class="task-price">3,700 ₽</span>
-                            </div>
-                            <div class="task-info">
-                                <p><strong>Проект:</strong> Магнит-Аптеки</p>
-                                <p><strong>Адрес:</strong> Москва, ул. Арбат, 20</p>
-                                <p><strong>Описание:</strong> Установка дисплея покупателя, подключение к сети</p>
-                                <p><strong>Состав оплаты:</strong> 1,200 ₽ (работа) + 2,500 ₽ (выезд)</p>
-                                <p><strong>Срок:</strong> До 26.06.2023</p>
-                            </div>
-                            <div class="task-meta">
-                                <span><i class="fas fa-clock"></i> Опубликована 15 мин назад</span>
-                                <span><i class="fas fa-users"></i> 2 подрядчика смотрят</span>
-                            </div>
-                            <div class="task-actions">
-                                <button class="btn-primary accept-task">
-                                    <i class="fas fa-check"></i> Принять задачу
-                                </button>
-                                <button class="btn-secondary">
-                                    <i class="fas fa-info-circle"></i> Подробнее
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="task-card">
-                            <div class="task-header">
-                                <h4>Монтаж 8 экранов в ТРЦ</h4>
-                                <span class="task-price">24,000 ₽</span>
-                            </div>
-                            <div class="task-info">
-                                <p><strong>Проект:</strong> Лента - экраны</p>
-                                <p><strong>Адрес:</strong> Москва, ТРЦ Европейский</p>
-                                <p><strong>Описание:</strong> Установка 8 информационных экранов в торговом зале</p>
-                                <p><strong>Состав оплаты:</strong> 3,000 ₽ за экран × 8 шт.</p>
-                                <p><strong>Срок:</strong> До 01.07.2023</p>
-                            </div>
-                            <div class="task-meta">
-                                <span><i class="fas fa-clock"></i> Опубликована 1 час назад</span>
-                                <span><i class="fas fa-users"></i> 5 подрядчиков смотрят</span>
-                            </div>
-                            <div class="task-actions">
-                                <button class="btn-primary accept-task">
-                                    <i class="fas fa-check"></i> Принять задачу
-                                </button>
-                                <button class="btn-secondary">
-                                    <i class="fas fa-info-circle"></i> Подробнее
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Мои текущие задачи -->
-                <div class="section">
-                    <h3>Мои текущие задачи</h3>
-                    
-                    <div class="my-tasks">
-                        <div class="task-mini-card">
-                            <h4>Тверская, 15</h4>
-                            <p>Установка дисплея</p>
-                            <div class="task-status-mini">
-                                <span class="status-badge status-in-progress">В работе</span>
-                            </div>
-                            <div class="task-actions-mini">
-                                <button class="btn-small">
-                                    <i class="fas fa-camera"></i> Загрузить отчет
-                                </button>
+                            <div class="calendar-grid">
+                                <div class="calendar-day header">Пн</div>
+                                <div class="calendar-day header">Вт</div>
+                                <div class="calendar-day header">Ср</div>
+                                <div class="calendar-day header">Чт</div>
+                                <div class="calendar-day header">Пт</div>
+                                <div class="calendar-day header">Сб</div>
+                                <div class="calendar-day header">Вс</div>
+                                
+                                <div class="calendar-day"></div>
+                                <div class="calendar-day"></div>
+                                <div class="calendar-day"></div>
+                                <div class="calendar-day"></div>
+                                <div class="calendar-day"></div>
+                                <div class="calendar-day"></div>
+                                <div class="calendar-day">1</div>
+                                
+                                <div class="calendar-day">2</div>
+                                <div class="calendar-day">3</div>
+                                <div class="calendar-day">4</div>
+                                <div class="calendar-day">5</div>
+                                <div class="calendar-day has-tasks">6</div>
+                                <div class="calendar-day">7</div>
+                                <div class="calendar-day">8</div>
                             </div>
                         </div>
                         
-                        <div class="task-mini-card">
-                            <h4>Ленинский пр-т, 45</h4>
-                            <p>Замена экрана</p>
-                            <div class="task-status-mini">
-                                <span class="status-badge status-on-check">На проверке</span>
-                            </div>
-                            <div class="task-actions-mini">
-                                <button class="btn-small open-chat">
-                                    <i class="fas fa-comment"></i> Чат с менеджером
-                                </button>
-                            </div>
+                        <div class="upcoming-deadlines">
+                            <h4>Предстоящие дедлайны:</h4>
+                            <ul>
+                                <li>
+                                    <i class="fas fa-calendar-check"></i>
+                                    <strong>10 окт:</strong> 5 точек Магнит-Аптека
+                                </li>
+                                <li>
+                                    <i class="fas fa-calendar-check"></i>
+                                    <strong>13 окт:</strong> Проверка отчетов Лента
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-
-                <!-- Чат с менеджером -->
-                <div class="section">
-                    <h3>Чат с менеджером проекта</h3>
-                    
-                    <div class="chat-demo">
-                        <div class="chat-message manager">
-                            <div class="message-header">
-                                <strong>Менеджер проекта</strong>
-                                <span>Вчера, 17:30</span>
-                            </div>
-                            <p>По задаче на Тверской нужно уточнить: экран должен быть установлен на высоте 1.8м от пола.</p>
-                        </div>
-                        
-                        <div class="chat-message contractor">
-                            <div class="message-header">
-                                <strong>Вы</strong>
-                                <span>Вчера, 17:45</span>
-                            </div>
-                            <p>Понял, будет сделано. Завтра утром выполню работы и загружу фотоотчет.</p>
-                        </div>
-                        
-                        <div class="chat-input">
-                            <input type="text" placeholder="Введите сообщение менеджеру...">
-                            <button class="btn-primary">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
+            </div>
+        </section>
+        
+        <!-- Подрядчик -->
+        <section id="contractor-section" class="role-section">
+            <div class="dashboard-header">
+                <div class="dashboard-title">
+                    <div class="dashboard-title-icon gradient-success">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div>
+                        <h1>Панель подрядчика</h1>
+                        <p class="dashboard-subtitle">ИП Сидоров А.В. | Москва и МО</p>
                     </div>
                 </div>
-            </section>
-        </main>
-
-        <!-- Информационная панель -->
-        <footer class="demo-info">
-            <div class="info-content">
-                <h4>Демонстрационный прототип ADTS Platform</h4>
-                <p>Это интерактивный прототип для демонстрации основных процессов платформы. Переключайтесь между ролями, чтобы увидеть разные интерфейсы.</p>
-                <p class="demo-features">
-                    <strong>Демонстрируемые возможности:</strong> Создание проекта, отслеживание статусов, чат между ролями, управление задачами, фотоотчеты, принятие задач подрядчиком.
-                </p>
+                
                 <div class="action-buttons">
-                    <button id="resetDemo" class="btn-secondary">
-                        <i class="fas fa-redo"></i> Сбросить демо
+                    <button class="btn btn-primary" id="upload-report-btn">
+                        <i class="fas fa-cloud-upload-alt"></i> Сдать отчет
                     </button>
-                    <button id="showAll" class="btn-secondary">
-                        <i class="fas fa-eye"></i> Показать все панели
+                    <button class="btn btn-outline" id="contractor-settings">
+                        <i class="fas fa-cog"></i> Настройки
                     </button>
                 </div>
             </div>
-        </footer>
+            
+            <div class="stats-overview">
+                <div class="stat-card">
+                    <div class="stat-label">
+                        <i class="fas fa-tasks"></i> Доступные задачи
+                    </div>
+                    <div class="stat-value">5</div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> +2 за сутки
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">
+                        <i class="fas fa-hard-hat"></i> В работе
+                    </div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-trend trend-down">
+                        <i class="fas fa-arrow-down"></i> -1 за неделю
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">
+                        <i class="fas fa-check-circle"></i> Выполнено
+                    </div>
+                    <div class="stat-value">87</div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> +12 за месяц
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">
+                        <i class="fas fa-wallet"></i> Доход за месяц
+                    </div>
+                    <div class="stat-value">154 800 ₽</div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> +18%
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tabs">
+                <button class="tab active" data-tab="available-tasks-contractor">
+                    <i class="fas fa-list"></i> Доступные задачи
+                    <span class="tab-badge">5</span>
+                </button>
+                <button class="tab" data-tab="earnings">
+                    <i class="fas fa-wallet"></i> Финансы
+                </button>
+                <button class="tab" data-tab="rating">
+                    <i class="fas fa-star"></i> Рейтинг
+                    <span class="tab-badge">4.5</span>
+                </button>
+            </div>
+            
+            <div class="tab-content active" id="available-tasks-tab">
+                <div class="task-grid">
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-client">"Магнит-Аптека"</div>
+                            <span class="status-badge status-new"><i class="fas fa-bolt"></i> Срочно</span>
+                        </div>
+                        <div class="task-body">
+                            <h4>Установка дисплея покупателя</h4>
+                            <div class="task-meta">
+                                <div class="task-meta-item">
+                                    <i class="fas fa-map-marker-alt"></i> ул. Пушкина, 10
+                                </div>
+                                <div class="task-meta-item">
+                                    <i class="fas fa-calendar"></i> До 10.10.2023
+                                </div>
+                            </div>
+                            <p class="task-description">
+                                Установка дисплея покупателя, подключение к сети, настройка.
+                            </p>
+                            <div class="task-price">1 200 ₽ + 2 500 ₽ выезд</div>
+                        </div>
+                        <div class="task-footer">
+                            <button class="btn btn-primary accept-task-btn">
+                                <i class="fas fa-check"></i> Принять задачу
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-client">"Лента"</div>
+                            <span class="status-badge status-new"><i class="fas fa-clock"></i> До 18.10</span>
+                        </div>
+                        <div class="task-body">
+                            <h4>Установка экранов в ТЦ "Мега"</h4>
+                            <div class="task-meta">
+                                <div class="task-meta-item">
+                                    <i class="fas fa-map-marker-alt"></i> ш. Энтузиастов
+                                </div>
+                                <div class="task-meta-item">
+                                    <i class="fas fa-calendar"></i> До 18.10.2023
+                                </div>
+                            </div>
+                            <p class="task-description">
+                                Установка 8 экранов, настройка, подключение к медиасистеме.
+                            </p>
+                            <div class="task-price">3 000 ₽/экран (24 000 ₽)</div>
+                        </div>
+                        <div class="task-footer">
+                            <button class="btn btn-primary accept-task-btn">
+                                <i class="fas fa-check"></i> Принять задачу
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="earnings-tab">
+                <div class="form-container">
+                    <h2 class="card-title">
+                        <i class="fas fa-money-bill-wave"></i> Финансовый отчет
+                    </h2>
+                    
+                    <div class="content-grid">
+                        <div>
+                            <h3 class="card-title">
+                                <i class="fas fa-chart-line"></i> Доход по месяцам
+                            </h3>
+                            
+                            <div class="chart-container">
+                                <canvas id="earnings-chart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="card-title">
+                                <i class="fas fa-receipt"></i> Последние выплаты
+                            </h3>
+                            
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Дата</th>
+                                            <th>Сумма</th>
+                                            <th>Статус</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>05.10.2023</td>
+                                            <td>45,200 ₽</td>
+                                            <td><span class="status-badge status-completed">Выплачено</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>28.09.2023</td>
+                                            <td>38,700 ₽</td>
+                                            <td><span class="status-badge status-completed">Выплачено</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="payment-card">
+                                <div>
+                                    <h4>Ожидаемая выплата</h4>
+                                    <p>За октябрь 2023</p>
+                                </div>
+                                <div class="payment-amount">
+                                    <div>28,500 ₽</div>
+                                    <p>К выплате 25.10.2023</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="rating-tab">
+                <div class="form-container">
+                    <h2 class="card-title">
+                        <i class="fas fa-star"></i> Рейтинг и отзывы
+                    </h2>
+                    
+                    <div class="rating-overview">
+                        <div>
+                            <div class="rating-score">4.5</div>
+                            <div class="rating-stars">
+                                <i class="fas fa-star active"></i>
+                                <i class="fas fa-star active"></i>
+                                <i class="fas fa-star active"></i>
+                                <i class="fas fa-star active"></i>
+                                <i class="fas fa-star-half-alt active"></i>
+                            </div>
+                            <p>87 выполненных задач</p>
+                        </div>
+                        
+                        <div class="rating-distribution">
+                            <div class="distribution-item">
+                                <span>5 звезд</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 70%;"></div>
+                                </div>
+                                <span>61</span>
+                            </div>
+                            <div class="distribution-item">
+                                <span>4 звезды</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 20%;"></div>
+                                </div>
+                                <span>17</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="card-title">
+                        <i class="fas fa-comment-alt"></i> Последние отзывы
+                    </h3>
+                    
+                    <div class="sidebar-card">
+                        <div class="review-header">
+                            <div>
+                                <h4>Менеджер: Иван Петров</h4>
+                                <div class="rating-stars">
+                                    <i class="fas fa-star active"></i>
+                                    <i class="fas fa-star active"></i>
+                                    <i class="fas fa-star active"></i>
+                                    <i class="fas fa-star active"></i>
+                                    <i class="fas fa-star active"></i>
+                                </div>
+                            </div>
+                            <span>05.10.2023</span>
+                        </div>
+                        <p class="review-text">
+                            Отличная работа! Все выполнено в срок, качественно. Фотоотчет подробный, замечаний нет. Рекомендую к сотрудничеству.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Модальные окна -->
+    <div class="modal" id="project-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Создание нового проекта</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Заполните заявку на проект</h3>
+                    <p>После отправки менеджер платформы свяжется с вами для уточнения деталей</p>
+                </div>
+                
+                <form id="project-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-heading"></i> Название проекта
+                            </label>
+                            <input type="text" class="form-control" placeholder="Например: Установка дисплеев в Магнит-Аптеках" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-map-marker-alt"></i> Количество точек
+                            </label>
+                            <input type="number" class="form-control" min="1" value="1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-align-left"></i> Описание проекта
+                        </label>
+                        <textarea class="form-control" rows="4" placeholder="Подробное описание работ..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-file-upload"></i> Прикрепить ТЗ
+                        </label>
+                        <div class="file-upload" id="file-upload-area">
+                            <div class="file-upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <p>Перетащите файл сюда или нажмите для выбора</p>
+                            <p>PDF, DOC, XLS до 50 МБ</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-paper-plane"></i> Отправить заявку
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="chat-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Чат с менеджером платформы</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="chat-container">
+                    <div class="chat-sidebar">
+                        <div class="chat-search">
+                            <input type="text" class="search-input" placeholder="Поиск чатов...">
+                        </div>
+                        
+                        <div class="chat-contacts">
+                            <div class="chat-contact active">
+                                <div class="chat-contact-avatar gradient-primary">
+                                    <i class="fas fa-user-tie"></i>
+                                </div>
+                                <div class="chat-contact-info">
+                                    <div class="chat-contact-name">Менеджер платформы</div>
+                                    <div class="chat-contact-last">Уточните сроки по 5 точкам...</div>
+                                </div>
+                                <div class="chat-contact-time">10:25</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-main">
+                        <div class="chat-header">
+                            <div class="chat-header-info">
+                                <h3>Менеджер платформы</h3>
+                                <p>Онлайн • Отвечает в течение 5 минут</p>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-messages">
+                            <div class="message message-incoming">
+                                Здравствуйте! Получили вашу заявку по проекту "Магнит-Аптека".
+                                <div class="message-time">10:15</div>
+                            </div>
+                            <div class="message message-incoming">
+                                Уточните, пожалуйста, сроки по 5 точкам в Омске. По документам есть расхождения.
+                                <div class="message-time">10:20</div>
+                            </div>
+                            <div class="message message-outgoing">
+                                Добрый день! Спасибо за оперативный ответ. Уточню с отделом и отвечу сегодня до 18:00.
+                                <div class="message-time">10:25</div>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-input">
+                            <textarea placeholder="Введите сообщение..." id="chat-input-text"></textarea>
+                            <button class="btn btn-primary" id="send-message-btn">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div class="notification" id="notification">
+        <div class="notification-icon">
+            <i class="fas fa-bell"></i>
+        </div>
+        <div>
+            <div class="notification-title">Новое уведомление</div>
+            <div class="notification-message"></div>
+        </div>
     </div>
 
     <script src="script.js"></script>
