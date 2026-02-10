@@ -18,7 +18,7 @@
                 </div>
                 <h3>Добро пожаловать в ADTS Platform!</h3>
                 <p>Платформа управления проектами по установке медиа-оборудования.</p>
-                <p>Февраль 2026 года. Тестируйте все функции системы.</p>
+                <p>Тестируйте все функции системы.</p>
             </div>
             <div class="tour-step hidden" id="tour-step-2">
                 <div class="tour-icon">
@@ -57,23 +57,23 @@
                 </div>
                 <div class="logo-text">
                     <span>ADTS Platform</span>
-                    <div class="logo-subtitle">Управление медиа-оборудованием • Февраль 2026</div>
+                    <div class="logo-subtitle">Управление медиа-оборудованием</div>
                 </div>
             </div>
             
             <div class="user-info">
                 <div class="role-selector">
                     <button class="role-btn active" data-role="customer">
-                        <i class="fas fa-building"></i> Заказчик
+                        <i class="fas fa-building" style="color: #4f46e5;"></i> Заказчик
                     </button>
                     <button class="role-btn" data-role="platform-manager">
-                        <i class="fas fa-cogs"></i> Менеджер платформы
+                        <i class="fas fa-cogs" style="color: #f59e0b;"></i> Менеджер платформы
                     </button>
                     <button class="role-btn" data-role="project-manager">
-                        <i class="fas fa-tasks"></i> Менеджер проектов
+                        <i class="fas fa-tasks" style="color: #0ea5e9;"></i> Менеджер проектов
                     </button>
                     <button class="role-btn" data-role="contractor">
-                        <i class="fas fa-tools"></i> Подрядчик
+                        <i class="fas fa-tools" style="color: #10b981;"></i> Подрядчик
                     </button>
                 </div>
                 
@@ -91,11 +91,11 @@
             <div class="dashboard-header">
                 <div class="dashboard-title">
                     <div class="dashboard-title-icon gradient-primary">
-                        <i class="fas fa-building"></i>
+                        <i class="fas fa-building" style="color: white;"></i>
                     </div>
                     <div>
                         <h1>Панель заказчика</h1>
-                        <p class="dashboard-subtitle">Компания "Магнит" • 11.02.2026</p>
+                        <p class="dashboard-subtitle">Компания "Магнит" • <span class="current-date">11.02.2026</span></p>
                     </div>
                 </div>
                 
@@ -111,40 +111,44 @@
             
             <div class="stats-overview">
                 <div class="stat-card">
-                    <div class="stat-label">
-                        <i class="fas fa-chart-line"></i> Активных проектов
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
                     </div>
-                    <div class="stat-value">5</div>
+                    <div class="stat-label">Активных проектов</div>
+                    <div class="stat-value" id="customer-active-projects">5</div>
                     <div class="stat-trend trend-up">
                         <i class="fas fa-arrow-up"></i> +2 за месяц
                     </div>
                 </div>
                 
                 <div class="stat-card">
-                    <div class="stat-label">
-                        <i class="fas fa-tv"></i> Всего точек
+                    <div class="stat-icon">
+                        <i class="fas fa-tv"></i>
                     </div>
-                    <div class="stat-value">89</div>
+                    <div class="stat-label">Всего точек</div>
+                    <div class="stat-value" id="customer-total-points">89</div>
                     <div class="stat-trend trend-up">
                         <i class="fas fa-arrow-up"></i> +28 за месяц
                     </div>
                 </div>
                 
                 <div class="stat-card">
-                    <div class="stat-label">
-                        <i class="fas fa-check-circle"></i> Выполнено
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
                     </div>
-                    <div class="stat-value">64</div>
+                    <div class="stat-label">Выполнено</div>
+                    <div class="stat-value" id="customer-completed">64</div>
                     <div class="stat-trend trend-up">
                         <i class="fas fa-arrow-up"></i> 71.9%
                     </div>
                 </div>
                 
                 <div class="stat-card">
-                    <div class="stat-label">
-                        <i class="fas fa-exclamation-triangle"></i> Проблемные
+                    <div class="stat-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
                     </div>
-                    <div class="stat-value">7</div>
+                    <div class="stat-label">Проблемные</div>
+                    <div class="stat-value" id="customer-problems">7</div>
                     <div class="stat-trend trend-down">
                         <i class="fas fa-arrow-down"></i> -3 за неделю
                     </div>
@@ -156,12 +160,12 @@
                     <i class="fas fa-project-diagram"></i> Проекты
                     <span class="tab-badge">3</span>
                 </button>
+                <button class="tab" data-tab="analytics">
+                    <i class="fas fa-chart-bar"></i> Аналитика
+                </button>
                 <button class="tab" data-tab="documents">
                     <i class="fas fa-folder"></i> Документы
                     <span class="tab-badge">12</span>
-                </button>
-                <button class="tab" data-tab="analytics">
-                    <i class="fas fa-chart-bar"></i> Аналитика
                 </button>
             </div>
             
@@ -346,6 +350,16 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Новая вкладка Аналитика -->
+            <div class="tab-content" id="analytics-tab">
+                <!-- Заполняется через JavaScript -->
+            </div>
+            
+            <!-- Новая вкладка Документы -->
+            <div class="tab-content" id="documents-tab">
+                <!-- Заполняется через JavaScript -->
+            </div>
         </section>
         
         <!-- Менеджер платформы -->
@@ -353,62 +367,66 @@
             <div class="dashboard-header">
                 <div class="dashboard-title">
                     <div class="dashboard-title-icon gradient-warning">
-                        <i class="fas fa-cogs"></i>
+                        <i class="fas fa-cogs" style="color: white;"></i>
                     </div>
                     <div>
                         <h1>Панель менеджера платформы</h1>
-                        <p class="dashboard-subtitle">Координация проектов • 11.02.2026</p>
+                        <p class="dashboard-subtitle">Координация проектов • <span class="current-date">11.02.2026</span></p>
                     </div>
                 </div>
                 
                 <div class="action-buttons">
-                    <button class="btn btn-secondary" id="process-requests">
-                        <i class="fas fa-inbox"></i> Обработать заявки
-                    </button>
                     <button class="btn btn-outline" id="platform-chat-btn">
                         <i class="fas fa-comments"></i> Чат с проектными менеджерами
+                    </button>
+                    <button class="btn btn-outline" id="platform-customer-chat-btn">
+                        <i class="fas fa-comments"></i> Чат с заказчиками
                     </button>
                 </div>
             </div>
             
             <div class="stats-overview">
                 <div class="stat-card">
-                    <div class="stat-label">
-                        <i class="fas fa-inbox"></i> Новые заявки
+                    <div class="stat-icon">
+                        <i class="fas fa-inbox"></i>
                     </div>
-                    <div class="stat-value">4</div>
+                    <div class="stat-label">Новые заявки</div>
+                    <div class="stat-value" id="platform-new-requests">4</div>
                     <div class="stat-trend trend-up">
                         <i class="fas fa-arrow-up"></i> +2 за сутки
                     </div>
                 </div>
                 
                 <div class="stat-card">
-                    <div class="stat-label">
-                        <i class="fas fa-play-circle"></i> Активных проектов
+                    <div class="stat-icon">
+                        <i class="fas fa-play-circle"></i>
                     </div>
-                    <div class="stat-value">12</div>
+                    <div class="stat-label">Активных проектов</div>
+                    <div class="stat-value" id="platform-active-projects">12</div>
                     <div class="stat-trend trend-up">
                         <i class="fas fa-arrow-up"></i> +3 за неделю
                     </div>
                 </div>
                 
                 <div class="stat-card">
-                    <div class="stat-label">
-                        <i class="fas fa-hourglass-half"></i> На согласовании
+                    <div class="stat-icon">
+                        <i class="fas fa-hourglass-half"></i>
                     </div>
-                    <div class="stat-value">6</div>
+                    <div class="stat-label">На согласовании</div>
+                    <div class="stat-value" id="platform-coordination">6</div>
                     <div class="stat-trend trend-down">
                         <i class="fas fa-arrow-down"></i> -1 за день
                     </div>
                 </div>
                 
                 <div class="stat-card">
-                    <div class="stat-label">
-                        <i class="fas fa-clock"></i> Среднее время
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
                     </div>
-                    <div class="stat-value">1.8ч</div>
-                    <div class="stat-trend trend-down">
-                        <i class="fas fa-arrow-down"></i> -0.5ч за месяц
+                    <div class="stat-label">Подрядчики</div>
+                    <div class="stat-value" id="platform-contractors">28</div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> +5 за месяц
                     </div>
                 </div>
             </div>
@@ -540,55 +558,14 @@
                 </div>
             </div>
             
+            <!-- Новая вкладка Активные проекты -->
+            <div class="tab-content" id="active-projects-tab">
+                <!-- Заполняется через JavaScript -->
+            </div>
+            
+            <!-- Новая вкладка Согласование -->
             <div class="tab-content" id="coordination-tab">
-                <div class="coordination-board">
-                    <div class="coordination-item">
-                        <div class="coordination-header">
-                            <h4>Проект "Магнит-Аптеки"</h4>
-                            <span class="status-badge status-in-progress">
-                                <i class="fas fa-spinner fa-spin"></i> Назначение ПМ
-                            </span>
-                        </div>
-                        
-                        <div class="coordination-body">
-                            <div class="coordination-details">
-                                <p><i class="fas fa-user-tie"></i> Заказчик: Компания "Магнит"</p>
-                                <p><i class="fas fa-map-marker-alt"></i> 25 точек, 3 региона</p>
-                                <p><i class="fas fa-calendar"></i> Срок: до 28.02.2026</p>
-                            </div>
-                            
-                            <div class="pm-assignment">
-                                <h5>Назначение проектным менеджерам:</h5>
-                                <div class="pm-list">
-                                    <div class="pm-item">
-                                        <div class="pm-avatar">ИП</div>
-                                        <div>
-                                            <strong>Иван Петров</strong>
-                                            <small>Москва, 12 точек</small>
-                                        </div>
-                                        <button class="btn btn-outline btn-sm assign-pm-btn">
-                                            <i class="fas fa-user-plus"></i> Назначить
-                                        </button>
-                                    </div>
-                                    <div class="pm-item">
-                                        <div class="pm-avatar">АС</div>
-                                        <div>
-                                            <strong>Анна Смирнова</strong>
-                                            <small>СПб, 8 точек</small>
-                                        </div>
-                                        <button class="btn btn-outline btn-sm assign-pm-btn">
-                                            <i class="fas fa-user-plus"></i> Назначить
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <button class="btn btn-primary w-full mt-3">
-                                <i class="fas fa-paper-plane"></i> Отправить проект ПМ
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <!-- Заполняется через JavaScript -->
             </div>
         </section>
         
@@ -597,17 +574,20 @@
             <div class="dashboard-header">
                 <div class="dashboard-title">
                     <div class="dashboard-title-icon gradient-info">
-                        <i class="fas fa-tasks"></i>
+                        <i class="fas fa-tasks" style="color: white;"></i>
                     </div>
                     <div>
                         <h1>Панель менеджера проектов</h1>
-                        <p class="dashboard-subtitle">Регион: Москва и МО • 11.02.2026</p>
+                        <p class="dashboard-subtitle">Регион: Москва и МО • <span class="current-date">11.02.2026</span></p>
                     </div>
                 </div>
                 
                 <div class="action-buttons">
                     <button class="btn btn-primary" id="create-task-pm">
                         <i class="fas fa-plus-circle"></i> Создать задачу
+                    </button>
+                    <button class="btn btn-outline" id="pm-platform-chat-btn">
+                        <i class="fas fa-comments"></i> Чат с менеджером платформы
                     </button>
                     <button class="btn btn-outline" id="pm-chat-btn">
                         <i class="fas fa-comments"></i> Чат с подрядчиками
@@ -617,40 +597,44 @@
             
             <div class="stats-overview">
                 <div class="stat-card">
-                    <div class="stat-label">
-                        <i class="fas fa-tasks"></i> Активных задач
+                    <div class="stat-icon">
+                        <i class="fas fa-tasks"></i>
                     </div>
-                    <div class="stat-value">8</div>
+                    <div class="stat-label">Активных задач</div>
+                    <div class="stat-value" id="pm-active-tasks">8</div>
                     <div class="stat-trend trend-up">
                         <i class="fas fa-arrow-up"></i> +2 за день
                     </div>
                 </div>
                 
                 <div class="stat-card">
-                    <div class="stat-label">
-                        <i class="fas fa-hard-hat"></i> Подрядчики
+                    <div class="stat-icon">
+                        <i class="fas fa-hard-hat"></i>
                     </div>
-                    <div class="stat-value">5</div>
+                    <div class="stat-label">Подрядчики</div>
+                    <div class="stat-value" id="pm-contractors">5</div>
                     <div class="stat-trend trend-up">
                         <i class="fas fa-arrow-up"></i> +1 за неделю
                     </div>
                 </div>
                 
                 <div class="stat-card">
-                    <div class="stat-label">
-                        <i class="fas fa-check-circle"></i> Выполнено
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
                     </div>
-                    <div class="stat-value">24</div>
+                    <div class="stat-label">Выполнено</div>
+                    <div class="stat-value" id="pm-completed">24</div>
                     <div class="stat-trend trend-up">
                         <i class="fas fa-arrow-up"></i> +7 за месяц
                     </div>
                 </div>
                 
                 <div class="stat-card">
-                    <div class="stat-label">
-                        <i class="fas fa-exclamation-triangle"></i> Проблемы
+                    <div class="stat-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
                     </div>
-                    <div class="stat-value">3</div>
+                    <div class="stat-label">Проблемы</div>
+                    <div class="stat-value" id="pm-problems">3</div>
                     <div class="stat-trend trend-down">
                         <i class="fas fa-arrow-down"></i> -1 за день
                     </div>
@@ -837,6 +821,11 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Новая вкладка Подрядчики -->
+            <div class="tab-content" id="pm-contractors-tab">
+                <!-- Заполняется через JavaScript -->
+            </div>
         </section>
         
         <!-- Подрядчик -->
@@ -844,11 +833,11 @@
             <div class="dashboard-header">
                 <div class="dashboard-title">
                     <div class="dashboard-title-icon gradient-success">
-                        <i class="fas fa-tools"></i>
+                        <i class="fas fa-tools" style="color: white;"></i>
                     </div>
                     <div>
                         <h1>Панель подрядчика</h1>
-                        <p class="dashboard-subtitle">ИП Сидоров А.В. • Москва • 11.02.2026</p>
+                        <p class="dashboard-subtitle">ИП Сидоров А.В. • Москва • <span class="current-date">11.02.2026</span></p>
                     </div>
                 </div>
                 
@@ -864,40 +853,44 @@
             
             <div class="stats-overview">
                 <div class="stat-card">
-                    <div class="stat-label">
-                        <i class="fas fa-list"></i> Доступные задачи
+                    <div class="stat-icon">
+                        <i class="fas fa-list"></i>
                     </div>
-                    <div class="stat-value">7</div>
+                    <div class="stat-label">Доступные задачи</div>
+                    <div class="stat-value" id="contractor-available-tasks">7</div>
                     <div class="stat-trend trend-up">
                         <i class="fas fa-arrow-up"></i> +3 за сутки
                     </div>
                 </div>
                 
                 <div class="stat-card">
-                    <div class="stat-label">
-                        <i class="fas fa-hard-hat"></i> В работе
+                    <div class="stat-icon">
+                        <i class="fas fa-hard-hat"></i>
                     </div>
-                    <div class="stat-value">3</div>
+                    <div class="stat-label">В работе</div>
+                    <div class="stat-value" id="contractor-in-progress">3</div>
                     <div class="stat-trend trend-down">
                         <i class="fas fa-arrow-down"></i> -1 за неделю
                     </div>
                 </div>
                 
                 <div class="stat-card">
-                    <div class="stat-label">
-                        <i class="fas fa-check-circle"></i> Выполнено
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
                     </div>
-                    <div class="stat-value">42</div>
+                    <div class="stat-label">Выполнено</div>
+                    <div class="stat-value" id="contractor-completed">42</div>
                     <div class="stat-trend trend-up">
                         <i class="fas fa-arrow-up"></i> +8 за месяц
                     </div>
                 </div>
                 
                 <div class="stat-card">
-                    <div class="stat-label">
-                        <i class="fas fa-wallet"></i> Доход за месяц
+                    <div class="stat-icon">
+                        <i class="fas fa-wallet"></i>
                     </div>
-                    <div class="stat-value">128 500 ₽</div>
+                    <div class="stat-label">Доход за месяц</div>
+                    <div class="stat-value" id="contractor-income">128 500 ₽</div>
                     <div class="stat-trend trend-up">
                         <i class="fas fa-arrow-up"></i> +22%
                     </div>
@@ -936,7 +929,7 @@
                             <div class="task-details">
                                 <span><i class="fas fa-calendar"></i> До 15.02.2026</span>
                                 <span><i class="fas fa-clock"></i> 2-3 часа</span>
-                                <span><i class="fas fa-tools"></i> Нужен перфоратор</span>
+                                <span><i class="fas fa-bolt"></i> Срочно</span>
                             </div>
                             <p class="task-description">
                                 Установка медиа-панели Samsung 65" на стену, подключение к сети и медиасистеме ТЦ.
@@ -1057,6 +1050,11 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            
+            <!-- Новая вкладка Финансы -->
+            <div class="tab-content" id="contractor-finance-tab">
+                <!-- Заполняется через JavaScript -->
             </div>
         </section>
     </main>
