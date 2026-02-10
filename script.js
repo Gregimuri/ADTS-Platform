@@ -1945,7 +1945,7 @@ function showNotification(title, message, type = 'info') {
             notification.classList.remove('show');
             notification.classList.remove('hiding');
         }, 500);
-    }, 3000); // Увеличено с 5000 до 3000 мс (3 секунды)
+    }, 3000);
 }
 
 function getCurrentTime() {
