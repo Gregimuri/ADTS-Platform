@@ -147,11 +147,48 @@ document.addEventListener('DOMContentLoaded', function() {
     stabilizeNumericValues();
 });
 
-// Инициализация платформы
+// Обновляем функцию инициализации платформы для замедления прогресса
 function initPlatform() {
     updateCurrentDate();
     initDemoData();
     initKanban();
+    
+    // Замедленная инициализация анимаций прогресса
+    setTimeout(() => {
+        initSlowProgressAnimations();
+    }, 1000);
+}
+
+// Инициализация замедленных анимаций прогресса
+function initSlowProgressAnimations() {
+    // Замедляем анимацию прогресса выполнения проектов
+    const progressFills = document.querySelectorAll('.progress-fill');
+    progressFills.forEach(fill => {
+        // Добавляем CSS класс для замедленной анимации
+        fill.style.transition = 'width 1.5s cubic-bezier(0.4, 0, 0.2, 1)';
+        
+        // Перезапускаем анимацию с задержкой
+        const currentWidth = fill.style.width;
+        fill.style.width = '0%';
+        
+        setTimeout(() => {
+            fill.style.width = currentWidth;
+        }, 100);
+    });
+    
+    // Замедляем анимацию иконок в карточках проектов
+    const projectIcons = document.querySelectorAll('.project-item .status-badge i');
+    projectIcons.forEach(icon => {
+        if (icon.classList.contains('fa-spinner')) {
+            icon.style.animation = 'spin 1.5s linear infinite';
+        }
+    });
+    
+    // Замедляем анимацию иконки в заголовке
+    const titleIcon = document.querySelector('.dashboard-title-icon i');
+    if (titleIcon) {
+        titleIcon.style.animation = 'slowPulse 4s infinite';
+    }
 }
 
 // Обновление текущей даты
@@ -427,7 +464,7 @@ function initOnboarding() {
     }
 }
 
-// Переключение ролей
+// Переключения ролей для повторной инициализации замедлений
 function initRoleSwitching() {
     document.querySelectorAll('.role-btn').forEach(btn => {
         btn.addEventListener('click', function() {
@@ -445,7 +482,7 @@ function initRoleSwitching() {
                 section.style.transform = 'translateY(10px)';
                 setTimeout(() => {
                     section.classList.remove('active');
-                }, 200);
+                }, 300); // Замедлено с 200
             });
             
             setTimeout(() => {
@@ -465,10 +502,16 @@ function initRoleSwitching() {
                 
                 // Стабилизация значений после переключения
                 setTimeout(stabilizeNumericValues, 100);
-            }, 200);
+                
+                // Повторная инициализация замедленных анимаций
+                if (role === 'customer') {
+                    setTimeout(initSlowProgressAnimations, 500);
+                }
+            }, 300); // Замедлено с 200
         });
     });
 }
+
 
 // Табы
 function initTabs() {
@@ -489,7 +532,7 @@ function initTabs() {
                 content.style.transform = 'translateY(10px)';
                 setTimeout(() => {
                     content.classList.remove('active');
-                }, 200);
+                }, 300); // Замедлено с 200
             });
             
             setTimeout(() => {
@@ -502,19 +545,24 @@ function initTabs() {
                 
                 // Инициализация контента для новых вкладок
                 if (tabId === 'analytics') {
-                    setTimeout(initAnalyticsTab, 50);
+                    setTimeout(initAnalyticsTab, 100); // Замедлено с 50
                 } else if (tabId === 'documents') {
-                    setTimeout(initDocumentsTab, 50);
+                    setTimeout(initDocumentsTab, 100); // Замедлено с 50
                 } else if (tabId === 'active-projects') {
-                    setTimeout(initActiveProjectsTab, 50);
+                    setTimeout(initActiveProjectsTab, 100); // Замедлено с 50
                 } else if (tabId === 'coordination') {
-                    setTimeout(initCoordinationTab, 50);
+                    setTimeout(initCoordinationTab, 100); // Замедлено с 50
                 } else if (tabId === 'pm-contractors') {
-                    setTimeout(initContractorsTab, 50);
+                    setTimeout(initContractorsTab, 100); // Замедлено с 50
                 } else if (tabId === 'contractor-finance') {
-                    setTimeout(initFinanceTab, 50);
+                    setTimeout(initFinanceTab, 100); // Замедлено с 50
                 }
-            }, 200);
+                
+                // Повторная инициализация замедленных анимаций для заказчика
+                if (parentSection.id === 'customer-section') {
+                    setTimeout(initSlowProgressAnimations, 300);
+                }
+            }, 300); // Замедлено с 200
         });
     });
 }
@@ -609,6 +657,109 @@ function initModals() {
         );
         this.reset();
     });
+    
+    // Инициализация чата заказчика после загрузки DOM
+    setTimeout(() => {
+        initCustomerChatEvents();
+    }, 500);
+}
+
+// Инициализация событий чата заказчика
+function initCustomerChatEvents() {
+    const sendBtn = document.getElementById('send-customer-message');
+    const input = document.getElementById('chat-customer-input');
+    const messagesContainer = document.getElementById('chat-customer-messages');
+    
+    if (sendBtn && input && messagesContainer) {
+        sendBtn.addEventListener('click', () => sendCustomerChatMessage(input, messagesContainer));
+        
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendCustomerChatMessage(input, messagesContainer);
+            }
+        });
+        
+        // Инициализация выбора контактов в чате заказчика
+        document.querySelectorAll('#chat-modal-customer .chat-contact-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('#chat-modal-customer .chat-contact-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                const contactName = this.querySelector('strong').textContent;
+                showNotification('Контакт выбран', `Теперь вы общаетесь с ${contactName}`);
+            });
+        });
+    }
+}
+
+// Отправка сообщения в чате заказчика
+function sendCustomerChatMessage(inputElement, messagesContainer) {
+    const message = inputElement.value.trim();
+    if (!message) return;
+    
+    const messageElement = document.createElement('div');
+    messageElement.className = 'message outgoing';
+    messageElement.innerHTML = `
+        <div class="message-content">
+            <div class="message-header">
+                <strong>Вы (Заказчик)</strong>
+                <span>${getCurrentTime()}</span>
+            </div>
+            <p>${message}</p>
+        </div>
+    `;
+    
+    messagesContainer.appendChild(messageElement);
+    inputElement.value = '';
+    
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    
+    APP_STATE.chatMessages.customer_platform.push({
+        id: Date.now(),
+        sender: 'customer',
+        message: message,
+        timestamp: getCurrentTime(),
+        read: true
+    });
+    
+    // Замедленный ответ
+    setTimeout(() => {
+        const responses = [
+            "Спасибо за сообщение! Рассмотрю ваш вопрос и вернусь с ответом.",
+            "Понял. Уточню информацию и дам обратную связь.",
+            "Хорошо, принял к сведению. Продолжаем работу по проекту.",
+            "Отлично! Обновлю информацию в системе и сообщу о результатах."
+        ];
+        
+        const response = responses[Math.floor(Math.random() * responses.length)];
+        
+        const responseElement = document.createElement('div');
+        responseElement.className = 'message incoming';
+        responseElement.innerHTML = `
+            <div class="message-avatar">МП</div>
+            <div class="message-content">
+                <div class="message-header">
+                    <strong>Менеджер платформы</strong>
+                    <span>${getCurrentTime()}</span>
+                </div>
+                <p>${response}</p>
+            </div>
+        `;
+        
+        messagesContainer.appendChild(responseElement);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        
+        APP_STATE.chatMessages.customer_platform.push({
+            id: Date.now(),
+            sender: 'platformManager',
+            message: response,
+            timestamp: getCurrentTime(),
+            read: true
+        });
+    }, 1500); // Замедленный ответ
 }
 
 function openModal(modalId) {
@@ -617,19 +768,29 @@ function openModal(modalId) {
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
         
-        // Прокрутка чатов вниз при открытии
+        // Замедленная прокрутка чатов вниз при открытии
         setTimeout(() => {
             const messagesContainer = modal.querySelector('.chat-messages');
             if (messagesContainer) {
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
             }
-        }, 100);
+            
+            // Замедленная анимация для модального окна
+            modal.style.animation = 'fadeIn 0.4s ease-out';
+            const modalContent = modal.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.style.animation = 'slideIn 0.5s ease-out';
+            }
+        }, 50);
     }
 }
 
 function closeModal(modal) {
     modal.classList.remove('active');
-    document.body.style.overflow = 'auto';
+    // Замедленное восстановление скролла
+    setTimeout(() => {
+        document.body.style.overflow = 'auto';
+    }, 300); // Замедлено с 200
 }
 
 // Кнопки действий
