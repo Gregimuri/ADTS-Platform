@@ -1139,15 +1139,40 @@
 
     <!-- Чат модальные окна -->
     <div class="modal chat-modal" id="chat-modal-customer">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">
-                    <i class="fas fa-comments"></i> Чат с менеджером платформы
-                </h2>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="chat-window">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                <i class="fas fa-comments"></i> Чат с менеджером платформы
+            </h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="chat-window">
+                <div class="chat-contacts-sidebar">
+                    <div class="chat-contact-item active">
+                        <div class="chat-contact-avatar">МП</div>
+                        <div class="chat-contact-info">
+                            <strong>Менеджер платформы</strong>
+                            <small>Основной контакт</small>
+                        </div>
+                    </div>
+                    <div class="chat-contact-item">
+                        <div class="chat-contact-avatar">АП</div>
+                        <div class="chat-contact-info">
+                            <strong>Алексей Петров</strong>
+                            <small>Менеджер проектов</small>
+                        </div>
+                    </div>
+                    <div class="chat-contact-item">
+                        <div class="chat-contact-avatar">ИС</div>
+                        <div class="chat-contact-info">
+                            <strong>ИП Сидоров А.В.</strong>
+                            <small>Подрядчик</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-main-area">
                     <div class="chat-messages" id="chat-customer-messages">
                         <div class="message incoming">
                             <div class="message-avatar">МП</div>
@@ -1180,10 +1205,21 @@
                                 <p>Добрый день! Спасибо за оперативный ответ. Уточню с отделом логистики и отправлю точные адреса сегодня до 18:00.</p>
                             </div>
                         </div>
+                        
+                        <div class="message incoming">
+                            <div class="message-avatar">МП</div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <strong>Менеджер платформы</strong>
+                                    <span>11.02.2026, 10:30</span>
+                                </div>
+                                <p>Отлично! Будем ждать. Также по проекту "Пятерочка" готовы чертежи для утверждения.</p>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="chat-input">
-                        <textarea placeholder="Введите сообщение..." id="chat-customer-input"></textarea>
+                        <textarea placeholder="Введите сообщение менеджеру платформы..." id="chat-customer-input"></textarea>
                         <button class="btn btn-primary" id="send-customer-message">
                             <i class="fas fa-paper-plane"></i>
                         </button>
@@ -1192,6 +1228,7 @@
             </div>
         </div>
     </div>
+</div>
 
     <div class="modal chat-modal" id="chat-modal-platform">
         <div class="modal-content">
